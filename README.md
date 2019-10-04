@@ -143,6 +143,8 @@ Any time we will perform more than 1 action on an rdd, we must cache it to preve
 `persist` gives the option to cache something to the disk instead of just to the memory (requires more resources to get
 to the specific state, but is better if we want to be more fault-tolerant)
 
+## Section 3: Running spark on a cluster
+
 ### Using spark on Amazon Elastic MapReduce
 
 In order to set up a spark task and execute it or EMR, we need to build a jar file containing the classes of the driver 
