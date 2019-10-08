@@ -262,6 +262,98 @@ to an s3 bucket when using EMR.
     
     * use `partitionBy` to demand less work from individual executor by using smaller partitions.  
 
+## Spark SQL
+
+### DataFrames
+
+RDD's can contain anything (unstructured data). 
+
+DataFrames extend RDD's to structured data, which can wrap data more compactly and lets spark optimize better.
+
+**DataFrame properties:** 
+
+* Contain Row objects
+
+* Can run SQL Queries
+
+* Has a schema (leading to more efficient storage)
+
+* Read and Write to JSON, Hive, Parquet
+
+* Communicates with JDBC/ODBC, Tableau
+
+### DataSets vs DataFrame
+
+A DataFrame is a DataSet of Row objects.
+
+DataSets can explicitly wrap a given type (e.g. `DataSet[Person]`, `DataSet[String,Double]`) 
+
+DataFrame schema is inferred at runtime; but a dataset can be inferred at **compile time**.
+
+RDD's can be converted to DataSets (with the method `rdd.toDS()`).
+
+The Trend in Spark is to use RDD's less and DataSets more.
+
+DataSets are more efficient:
+
+* They can seriallize very efficiently
+
+* optimal execution plans can be determined at compile time
+
+### Using DataSets and DataFrames in scripts
+
+Instead of creating a `SparkContext` we need to create a `SparkSession`.
+
+* We can get a `SparkContext` from the `SparkSession`
+
+* Remember to stop the session when done
+
+### Examples for commonly used operations:
+
+* `df.show()` - show the top 20 results
+
+* `df.select("fieldName")` - extract a specific column from a dataframe
+
+* `df.filter(df("fieldName") > 200)`
+
+* `df.groupBy(df("fieldName")).mean()`
+
+* `df.rdd().map(mapperFunction)`
+
+* add a column with a certain operation:
+    ```scala
+    import org.apache.spark.sql.functions.udf 
+    
+    val df: DataFrame = ???  // some dataframe
+    val square = (x => x*x)
+    val squaredDf = df.withColumn("square", square('value'))
+    ```
+
+## MLLIB
+
+Sparks machine Learning library (MLLIB) can be used for:
+
+* Feature extraction
+
+* Basic statistics
+
+* Linear Regression, Logistic Regression
+
+*  Support Vector Machine
+
+* Naive Bayes Classifier
+
+* Decision Trees
+
+and much more...
+
+
+
+
+* Feature Exxtraction
+
+* 
+
 ## Terminology
 
 * RDD - Resilient Distributed Dataset - a spark construct or a little mini databse of infromation
@@ -278,3 +370,5 @@ node in the cluster.
 
 * Accumulator - a shared object across the entire spark cluster that maintains a state (for example count) that allows 
 all executors to increment a shared variable across the whole cluster in a thread-safe way.
+
+* DataFrames (`DataSet[Row]`) a data structure used by spark to perform operations on structured data 
