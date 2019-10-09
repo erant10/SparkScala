@@ -262,7 +262,7 @@ to an s3 bucket when using EMR.
     
     * use `partitionBy` to demand less work from individual executor by using smaller partitions.  
 
-## Spark SQL
+## Section 4: Spark SQL
 
 ### DataFrames
 
@@ -329,7 +329,7 @@ Instead of creating a `SparkContext` we need to create a `SparkSession`.
     val squaredDf = df.withColumn("square", square('value'))
     ```
 
-## MLLIB
+## Section 5: MLLIB
 
 Sparks machine Learning library (MLLIB) can be used for:
 
@@ -347,12 +347,40 @@ Sparks machine Learning library (MLLIB) can be used for:
 
 and much more...
 
+## Section 6: Spark Streaming
 
+### Intro to Spark Streaming
 
+Spark Stream is a tool used to analyze streams of data as it comes in real time.
 
-* Feature Exxtraction
+Data is aggregated and analyzed at some given interval
 
-* 
+Can take data fed to some port, Amazon Kinesis, HDFS, Kafka, and others.
+
+"Checkpointing" stores state to disk periodically for fault tolerance.  
+
+A `DStream` object breaks up the stream into distinct RDD's
+
+"Windowed Operations" can combine results from multiple batches over some slide window:
+
+* `window`
+* `reduceByWindow`
+* `reduceByKeyAndWindow`
+
+`updateStateByKey` maintains a state across many batches as time goes on
+
+### Structured Streaming
+
+Uses DataSets as its primary API.
+
+We can think of it as a DataSet that keeps getting appended to forever, and we can query it whenever.
+
+```scala
+val inputDF = spark.readStream.json("s3://logs")
+inputDf.groupBy($"action", window($"time", "1 hour")).count()
+.writeStream.format("jdbc").start("jdbc://mysql/...")
+```
+
 
 ## Terminology
 
