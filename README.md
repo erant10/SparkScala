@@ -1,4 +1,4 @@
-# Spark With Scala
+# Apache Spark with Scala - Hands On with Big Data (Udemy Course)
 
 ## Section 1: Spark Basics
 
